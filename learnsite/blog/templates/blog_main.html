@@ -8,5 +8,11 @@
 </head>
 <body>
     <h1>Запрацював бложик</h1>
+    {% for post in posts %}
+        <h3>{{ post.title }}</h3>
+        <h6>{{ post.created_at }}</h6>
+        <div>{{ post.text }}</div>
+        <br><br><br>
+    {% endfor %}
 </body>
 </html>
