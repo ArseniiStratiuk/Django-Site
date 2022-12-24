@@ -7,7 +7,5 @@ class Post(models.Model):
     text = models.TextField()
     created_at = models.DateTimeField(default=timezone.now)
     post_slug = models.CharField(max_length=80, default="default_post")
-    
-    
     def __str__(self):
         return self.title

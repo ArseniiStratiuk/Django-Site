@@ -1,7 +1,8 @@
 {% extends 'navbar.html' %}
+
     {% block content %}
     <div class="container">
-        <h1>Запрацював бложик</h1>
+        <h1>Запрацював блог</h1>
         {% if posts %}
             <div class="row">
                 {% for post in posts %}
@@ -9,10 +10,10 @@
                     <div class="card">
                         <div class="card-content">
                             <span class="card-title">
-                                <a href="/">{{ post.title }}</a>
+                                <a href="/{{ post.post_slug }}">{{ post.title }}</a>
                             </span>
                             <h6>{{ post.created_at }}</h6>
-                            <div class="card-content">{{ post.text|truncatechars:100 }}</div>
+                            <div class="card-content">{{ post.text|truncatechars:100 }}...</div>
                             <br><br><br>
                         </div>
                     </div>
@@ -22,3 +23,4 @@
         {% endif %}
     </div>
     {% endblock %}
+    
