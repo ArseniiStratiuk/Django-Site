@@ -13,7 +13,7 @@
                                 <a href="/{{ post.post_slug }}">{{ post.title }}</a>
                             </span>
                             <h6>{{ post.created_at }}</h6>
-                            <div class="card-content">{{ post.text|truncatechars:100 }}...</div>
+                            <div class="card-content">{{ post.text|truncatechars:200 }}</div>
                             <br><br><br>
                         </div>
                     </div>
@@ -23,4 +23,3 @@
         {% endif %}
     </div>
     {% endblock %}
-    
