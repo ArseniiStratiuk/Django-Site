@@ -5,20 +5,23 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     </head>
     <body>
+      <div class="navbar-fixed">
         <nav>
-            <div class="nav-wrapper teal lighten-2">
-              <a href="/" class="brand-logo">Logo</a>
+          <div class="nav-wrapper teal lighten-2 z-depth-1">
+            <div class="container">
+              <a href="/" class="brand-logo">Головна</a>
               <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="/admin">Admin</a></li>
-                <li><a href="badges.html">Components</a></li>
-                <li><a href="collapsible.html">JavaScript</a></li>
               </ul>
-            </div>
+            </div>  
+          </div>
         </nav>
-        {% block content %}
-        {% endblock %}
+      </div>
+      <br>
+      {% block content %}
+      {% endblock %}
 
-        {% block footer %}
-        {% endblock%}
+      {% block footer %}
+      {% endblock%}
     </body>
 </html>
