@@ -44,4 +44,20 @@ def logout_request(request):
     return redirect("/")
 
 def login_request(request):
-    for 
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+
+        if form.is_valid():
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, f"Ви успішно увійшли, {username}")
+                return redirect("/")
+            else:
+                for msg in form.error_messages:
+                    messages.error(request, f"Помилка, неправильний {msg}")
+                return redirect("/login")
+    form = AuthenticationForm()
+    return render(request, "login.html", {"form": form})
