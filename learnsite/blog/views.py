@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Post
+from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm
 
@@ -23,7 +24,14 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
+            username = form.cleaned_data.get("username")
+            messages.success(request, f"Створено новий акаунт: {username}")
             return redirect("/")
+        else:
+            print("ERROR DURING REGISTRATION!+")
+            for msg in form.error_messages:
+                messages.error(request, f"{msg}")
+            return render(request, 'register.html', {'form': form})
             
     # GET incoming
     data_dict = {"form": UserCreationForm}
