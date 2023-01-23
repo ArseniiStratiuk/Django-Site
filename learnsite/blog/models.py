@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from PIL import Image
+from django.contrib.auth.models import User
 
 
 class Post(models.Model):
@@ -12,6 +13,10 @@ class Post(models.Model):
                             upload_to="blog/static/img", height_field=None,
                             width_field=None, max_length=200, 
                             verbose_name="Картинка для поста")
+    views_number = models.ManyToManyField(User, related_name="views_rating")
+
+    def get_views_number(self):
+        return self.views_number.count()
 
     def save(self, *args, **kwargs):
         super().save()

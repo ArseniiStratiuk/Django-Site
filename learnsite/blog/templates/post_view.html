@@ -9,13 +9,13 @@
                     <div class="card">
                         <div class="card-content">
                             <span text-align="center" display="block">
-                                <img class="center-align responsive-img" 
-                                src="/{{ post.img }}">
+                                <img class="center-align responsive-img" src="/{{ post.img }}">
                             </span>
                             <br><br>
                             <span class="card-title">
                                 <a href="/">{{ post.title }}</a>
                             </span>
+                            <h6>Переглянуто: {{ views_num }}</h6>
                             <h6>{{ post.created_at }}</h6>
                             <div class="card-content">{{ post.text }}</div>
                             <br><br>
