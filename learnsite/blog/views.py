@@ -11,6 +11,17 @@ def blog_main(request, *args):
     }
     return render(request, 'blog_main.html', data_dict)
 
+def search_post(request):
+    """
+    Functionality for navbar to process search form.
+    """
+    posts = None
+    if request.method == "POST":
+        text = request.POST.get("searchpost")
+        posts = Post.objects.filter(title__icontains=text)
+    data_dict = {"posts": posts}
+    return render(request, 'blog_main.html', data_dict)
+
 def slug_process(request, slug):
     post_slugs = [ p.post_slug for p in Post.objects.all()]
     if slug in post_slugs:
