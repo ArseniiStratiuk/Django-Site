@@ -13,7 +13,7 @@ class Post(models.Model):
                             upload_to="blog/static/img", height_field=None,
                             width_field=None, max_length=200, 
                             verbose_name="Картинка для поста")
-    views_number = models.ManyToManyField(User, related_name="views_rating")
+    views_number = models.ManyToManyField(User, related_name="views_rating", blank=True)
 
     def get_views_number(self):
         return self.views_number.count()
