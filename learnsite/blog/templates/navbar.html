@@ -19,10 +19,8 @@
                     <input type="search" name="searchpost" placeholder="Назва статті...">
                   </form>
                 </li>
-                <li><button class="waves-effect waves-light btn small" form="search_nav" type="submit">
-                  <div class="valign-wrapper">
-                    <i class="material-icons">search</i>
-                  </div>
+                <li><button class="waves-effect btn-floating waves-light btn-medium" form="search_nav" type="submit">
+                  <i class="material-icons">search</i>
                 </button></li>
                 <li><a href="/admin">Admin</a></li>
                 {% if not user.is_authenticated %}
