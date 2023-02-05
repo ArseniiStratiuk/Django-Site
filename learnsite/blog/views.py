@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
-from .models import Post
+from .models import Post, Profile
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from .forms import ProfileForm
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 
@@ -22,6 +24,24 @@ def blog_main(request, *args):
         "posts": data_page
     }
     return render(request, 'blog_main.html', data_dict)
+
+@login_required
+def profile(request):
+    if request.method == 'POST':
+        pass
+    else:
+        try:
+            request.user.profile
+        except Profile.DoesNotExist:
+            Profile.objects.create(user=request.user).save()
+        finally:
+            profile_form = ProfileForm(instance=request.user.profile)
+
+    profile = request.user.profile
+    return render(request, 'profile.html', {
+        'profile': profile,
+        'profile-form': profile_form
+    })
 
 def search_post(request):
     """

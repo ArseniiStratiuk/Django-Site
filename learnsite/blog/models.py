@@ -18,6 +18,10 @@ class Profile(models.Model):
         if img.height > 120 or img.width > 120:
             img.thumbnail((120, 120))
             img.save(self.avatar.path)
+        
+    def __str__(self):
+        return self.user.username
+
 
 class Post(models.Model):
     title = models.CharField(max_length=100)

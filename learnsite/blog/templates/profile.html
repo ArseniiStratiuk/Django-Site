@@ -1,0 +1,11 @@
+{% extends 'navbar.html' %}
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <h1>Профіль користувача {{ user.username }}</h1>
+            <img src="/{{ profile.avatar }}" class="center-align">
+        </div>
+    </div>
+
+{% endblock %}
