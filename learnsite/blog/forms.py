@@ -1,5 +1,6 @@
 from django import forms
 from .models import Profile
+from .models import Comment
 
 
 class ProfileForm(forms.ModelForm):
@@ -11,3 +12,10 @@ class ProfileForm(forms.ModelForm):
         fields = ['avatar', 'about']
         
         
+class AddComment(forms.ModelForm):
+    content = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Ваш коментар тут...', 
+                                                    'class': 'form-control'}))
+    
+    class Meta:
+        model = Comment
+        fields = ['content']
