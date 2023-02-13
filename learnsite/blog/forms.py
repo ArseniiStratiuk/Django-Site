@@ -12,7 +12,7 @@ class ProfileForm(forms.ModelForm):
         fields = ['avatar', 'about']
         
         
-class AddComment(forms.ModelForm):
+class AddCommentForm(forms.ModelForm):
     content = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Ваш коментар тут...', 
                                                     'class': 'form-control'}))
     
