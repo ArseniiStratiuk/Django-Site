@@ -2,7 +2,7 @@
 
   {% block content %}
   <div class="container">
-      <h1>Запрацював блог</h1>
+      <h1 class="center-align">Запрацював блог</h1>
       <br><br>
       {% if posts %}
           <div class="row">
@@ -17,10 +17,10 @@
                               <a class="teal-text text-lighten-2" href="/{{ post.post_slug }}"><h5><strong>{{ post.title }}</strong></h5></a>
                           </span>
                           <div class='row'>
-                            <div class="col s6 l6">
+                            <div class="col s5 l5">
                               <h6><strong>Переглянуто: {{ post.get_views_number }} user{{ post.get_views_number|pluralize }}</strong></h6>
                             </div>
-                            <div class="col s6 l6">
+                            <div class="col s7 l7">
                               <h6><strong>Сподобалося: {{ post.get_likes_number }} user{{ post.get_likes_number|pluralize }}</strong></h6>
                             </div>
                           </div>
@@ -33,7 +33,7 @@
               {% endfor %}
           </div>
           
-          <div class="row">
+          <div class="row center-align">
             <ul class="pagination">
               {% if posts.has_previous %}
                 <li class="waves-effect"><a href="?page={{ posts.previous_page_number }}"><i class="material-icons">chevron_left</i></a></li>

@@ -92,7 +92,7 @@ def get_comment_form(request, post):
     return form
 
 def slug_process(request, slug):
-    post_slugs = [ p.post_slug for p in Post.objects.all()]
+    post_slugs = [p.post_slug for p in Post.objects.all()]
     if slug in post_slugs:
         post = Post.objects.get(post_slug = slug)
         if request.user.is_authenticated:
