@@ -69,11 +69,23 @@ def search_post(request):
     """
     Functionality for navbar to process search form.
     """
+    page = request.GET.get('page')
     posts = None
     if request.method == "POST":
         text = request.POST.get("searchpost")
         posts = Post.objects.filter(title__icontains=text)
-    data_dict = {"posts": posts}
+        
+    paginator = Paginator(posts, 4)
+    try:
+        data_page = paginator.page(page)
+    except PageNotAnInteger:
+        data_page = paginator.page(1)
+    except EmptyPage:
+        data_page = paginator.page(paginator.num_pages)
+    
+    data_dict = {
+        "posts": data_page
+    }
     return render(request, 'blog_main.html', data_dict)
 
 def get_comment_form(request, post):
