@@ -76,5 +76,13 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = "Категорії"
 
+    def save(self, *args, **kwargs):
+        super().save()
+        img = Image.open(self.img.path)
+
+        if img.height > 200 or img.width > 200:
+            img.thumbnail((200, 200))
+            img.save(self.img.path)
+
     def __str__(self):
         return f'{self.name}  URL: {self.category_slug}'
