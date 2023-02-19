@@ -23,6 +23,31 @@ class Profile(models.Model):
         return self.user.username
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=80)
+    info = models.TextField(blank=True)
+    category_slug = models.CharField(max_length=80, default='category_main')
+    img = models.ImageField(default='default.png', 
+                            height_field=None, 
+                            upload_to='blog/static/img/categories', 
+                            width_field=None, max_length=200, 
+                            verbose_name='Картинка для категорії')
+
+    class Meta:
+        verbose_name_plural = "Категорії"
+
+    def save(self, *args, **kwargs):
+        super().save()
+        img = Image.open(self.img.path)
+
+        if img.height > 200 or img.width > 200:
+            img.thumbnail((200, 200))
+            img.save(self.img.path)
+
+    def __str__(self):
+        return f'{self.name}  URL: {self.category_slug}'
+
+
 class Post(models.Model):
     title = models.CharField(max_length=100)
     text = models.TextField()
@@ -34,6 +59,7 @@ class Post(models.Model):
                             verbose_name='Картинка для поста')
     views_number = models.ManyToManyField(User, related_name='views_rating', blank=True)
     likes = models.ManyToManyField(User, related_name='post_likes', blank=True)
+    category = models.ForeignKey(Category, default=1, on_delete=models.SET_DEFAULT)
 
     def get_views_number(self):
         return self.views_number.count()
@@ -61,28 +87,3 @@ class Comment(models.Model):
     
     def __str__(self):
         return self.content
-
-
-class Category(models.Model):
-    name = models.CharField(max_length=80)
-    info = models.TextField(blank=True)
-    category_slug = models.CharField(max_length=80, default='category_main')
-    img = models.ImageField(default='default.png', 
-                            height_field=None, 
-                            upload_to='blog/static/img/categories', 
-                            width_field=None, max_length=200, 
-                            verbose_name='Картинка для категорії')
-
-    class Meta:
-        verbose_name_plural = "Категорії"
-
-    def save(self, *args, **kwargs):
-        super().save()
-        img = Image.open(self.img.path)
-
-        if img.height > 200 or img.width > 200:
-            img.thumbnail((200, 200))
-            img.save(self.img.path)
-
-    def __str__(self):
-        return f'{self.name}  URL: {self.category_slug}'
