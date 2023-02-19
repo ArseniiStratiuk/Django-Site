@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Post, Profile, Comment
+from .models import Post, Profile, Comment, Category
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -104,6 +104,20 @@ def get_comment_form(request, post):
     return form
 
 def slug_process(request, slug):
+    """
+    Search URL in category slugs first and if no matching, 
+    then search URL in post slugs. In both cases show sidebar 
+    with categories.
+    """
+    sidebar = Category.objects.all()
+    categories = [c.category_slug for c in Category.objects.all()]
+    if slug in categories:
+        category_posts = Post.objects.filter(post_category__category_slug=slug)
+        return render(request, "category.html", {
+            'posts': category_posts, 
+            'sidebar': sidebar
+        })
+
     post_slugs = [p.post_slug for p in Post.objects.all()]
     if slug in post_slugs:
         post = Post.objects.get(post_slug = slug)
@@ -121,7 +135,8 @@ def slug_process(request, slug):
                       'likes_num': likes, 
                       'comment_form': form, 
                       'comments': comments, 
-                      'is_liked': is_liked }
+                      'is_liked': is_liked, 
+                      'sidebar': sidebar }
         return render(request, 'post_view.html', data_dict)
 
 def register(request):
