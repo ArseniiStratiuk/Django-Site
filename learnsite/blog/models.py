@@ -29,7 +29,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     post_slug = models.CharField(max_length=80, default='default_post')
     img = models.ImageField(default='blog/static/img/default.png', 
-                            height_field=None, 
+                            height_field=None, upload_to='blog/static/img', 
                             width_field=None, max_length=200, 
                             verbose_name='Картинка для поста')
     views_number = models.ManyToManyField(User, related_name='views_rating', blank=True)
@@ -61,3 +61,20 @@ class Comment(models.Model):
     
     def __str__(self):
         return self.content
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=80)
+    info = models.TextField(blank=True)
+    category_slug = models.CharField(max_length=80, default='category_main')
+    img = models.ImageField(default='default.png', 
+                            height_field=None, 
+                            upload_to='blog/static/img/categories', 
+                            width_field=None, max_length=200, 
+                            verbose_name='Картинка для категорії')
+
+    class Meta:
+        verbose_name_plural = "Категорії"
+
+    def __str__(self):
+        return f'{self.name}  URL: {self.category_slug}'
