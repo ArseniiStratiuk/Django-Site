@@ -59,7 +59,8 @@ class Post(models.Model):
                             verbose_name='Картинка для поста')
     views_number = models.ManyToManyField(User, related_name='views_rating', blank=True)
     likes = models.ManyToManyField(User, related_name='post_likes', blank=True)
-    category = models.ForeignKey(Category, default=1, on_delete=models.SET_DEFAULT)
+    category = models.ForeignKey(Category, default=1, on_delete=models.SET_DEFAULT, 
+                                 verbose_name='Категорія')
 
     def get_views_number(self):
         return self.views_number.count()
