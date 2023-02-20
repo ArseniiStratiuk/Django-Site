@@ -2,64 +2,69 @@
 
     {% block content %}
     <br>
-    <div class="container">
-        {% if post %}
-            <div class="row">
-                <div class="col s12 l12">
-                    <div class="card">
-                        <div class="card-content">
-                            <span text-align="center" display="block">
-                                <img class="center-align responsive-img" src="/{{ post.img }}">
-                            </span>
-                            <br><br>
-                            <span class="card-title">
-                                <a class="teal-text text-lighten-2" href="/"><strong>{{ post.title }}</strong></a>
-                            </span>
-                            <div class='row'>
-                                <div class="col s6 l6">
-                                    <h6><strong>Переглянуто: {{ views_num }}</strong></h6>
-                                </div>
-                                <div class="col s6 l6">
-                                    {% if user.is_authenticated %}
-                                        <form id="like" action="{% url 'like_post' post.id %}" method="GET">
-                                        </form>
+    
+    {% if post %}
+        <div class="row">
+            <div class="col s12 l12">
+                <div class="card">
+                    <div class="card-content">
+                        <span text-align="center" display="block">
+                            <img class="center-align responsive-img" src="/{{ post.img }}">
+                        </span>
+                        <br><br>
+                        <span class="card-title">
+                            <a class="teal-text text-lighten-2" href="/"><strong>{{ post.title }}</strong></a>
+                        </span>
+                        <div class='row'>
+                            <div class="col s6 l6">
+                                <h6><strong>Переглянуто: {{ views_num }}</strong></h6>
+                            </div>
+                            <div class="col s6 l6">
+                                {% if user.is_authenticated %}
+                                    <form id="like" action="{% url 'like_post' post.id %}" method="GET">
+                                    </form>
+                                {% endif %}
+                                <button form="like" type="submit" class="btn-floating waves-effect waves-light red">
+                                    {% if is_liked %}
+                                        <i class="medium material-icons">favorite</i>
+                                    {% else %}
+                                        <i class="medium material-icons">favorite_border</i>
                                     {% endif %}
-                                    <button form="like" type="submit" class="btn-floating waves-effect waves-light red">
-                                        {% if is_liked %}
-                                            <i class="medium material-icons">favorite</i>
-                                        {% else %}
-                                            <i class="medium material-icons">favorite_border</i>
-                                        {% endif %}
-                                    </button>
-                                    <h6><strong>{{ likes_num }} Like{{ likes_num|pluralize }}</strong></h6>
-                                </div>
-                            </div>                            
-                            <h6>{{ post.created_at }}</h6>
-                            <div class="card-content">{{ post.text }}</div>
-                            <br><br>
-                        </div>
+                                </button>
+                                <h6><strong>{{ likes_num }} Like{{ likes_num|pluralize }}</strong></h6>
+                            </div>
+                        </div>                            
+                        <h6>{{ post.created_at }}</h6>
+                        <div class="card-content">{{ post.text }}</div>
+                        <br><br>
                     </div>
                 </div>
             </div>
+        </div>
 
-            {% include "sidebar.html" %}
+        {% include "sidebar.html" %}
 
-            {% if user.is_authenticated %}
+        {% if user.is_authenticated %}
+        <div class="row">
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                <button class="waves-effect waves-light teal lighten-2 btn" type="submit">Опублікувати</button>
+            </form>
+        </div>
+        {% endif %}
+        {% for comment in comments %}
             <div class="row">
-                <form action="" method="POST">
-                    {% csrf_token %}
-                    {{ comment_form.as_p }}
-                    <button class="waves-effect waves-light teal lighten-2 btn" type="submit">Опублікувати</button>
-                </form>
-            </div>
-            {% endif %}
-            {% for comment in comments %}
-                <div class="row">
-                    <img src="/{{ comment.author.profile.avatar }}">
+                <div class="col s4 l2">
+                    <img src="/{{ comment.author.profile.avatar }}" class="circle responsive-img">
+                </div>
+                <div class="col s8 l10">
                     <p>{{ comment }}</p>
                     <p>{{ comment.created_at }}</p>
                 </div>
-            {% endfor %}
-        {% endif %}
+            </div>
+        {% endfor %}
+        </div>
     </div>
+    {% endif %}
     {% endblock %}
