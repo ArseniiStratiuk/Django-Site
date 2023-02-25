@@ -21,19 +21,25 @@
             
         {% endif %}
 
-        <div class="card hoverable">
+        <div class="card z-depth-1 hoverable">
+            <div class="card-image">
+                <img src="/{{ post.img }}">
+            </div>
             <div class="card-content">
-                <div class="card-image">
-                    <img class="center-align responsive-img"
-                     src="/{{ post.img }}">
-                </div>
                 <span class="card-title">
-                    <a href="/{{ post.post_slug }}">{{ post.title }}</a>
+                    <a class="teal-text text-lighten-2" href="/{{ post.post_slug }}"><h5><strong>{{ post.title }}</strong></h5></a>
                 </span>
-                <h6>Переглянуло: {{ post.get_views_number }}</h6>
+                <div class='row'>
+                  <div class="col s5 l5">
+                    <h6><strong>Переглянуто: {{ post.get_views_number }} user{{ post.get_views_number|pluralize }}</strong></h6>
+                  </div>
+                  <div class="col s7 l7">
+                    <h6><strong>Сподобалося: {{ post.get_likes_number }} user{{ post.get_likes_number|pluralize }}</strong></h6>
+                  </div>
+                </div>
                 <h6>{{ post.created_at }}</h6>
-                <div class="card-content">{{ post.text|truncatechars:100 }}...</div>
-                <br><br><br>
+                <div class="card-content">{{ post.text|truncatechars:190 }}</div>
+                <br>
             </div>
         </div>
     </div>
