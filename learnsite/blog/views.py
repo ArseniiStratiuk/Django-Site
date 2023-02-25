@@ -11,7 +11,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 def blog_main(request, *args):
     page = request.GET.get('page')
     posts = Post.objects.all()
-    
+    sidebar = Category.objects.all()
     paginator = Paginator(posts, 4)
     try:
         data_page = paginator.page(page)
@@ -19,9 +19,9 @@ def blog_main(request, *args):
         data_page = paginator.page(1)
     except EmptyPage:
         data_page = paginator.page(paginator.num_pages)
-    
-    data_dict = {
-        "posts": data_page
+    data_dict  ={
+        "posts": data_page,
+        "sidebar": sidebar
     }
     return render(request, 'blog_main.html', data_dict)
 
