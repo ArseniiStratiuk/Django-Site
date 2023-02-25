@@ -110,14 +110,14 @@ def slug_process(request, slug):
     with categories.
     """
     sidebar = Category.objects.all()
-    categories = [c.category_slug for c in Category.objects.all()]
+    categories = [ c.category_slug for c in sidebar]
     if slug in categories:
-        category_posts = Post.objects.filter(post_category__category_slug=slug)
+        category_posts = Post.objects.filter(category__category_slug=slug)
         return render(request, "category.html", {
-            'posts': category_posts, 
-            'sidebar': sidebar
+            "posts" : category_posts, 
+            "sidebar": sidebar
         })
-
+        
     post_slugs = [p.post_slug for p in Post.objects.all()]
     if slug in post_slugs:
         post = Post.objects.get(post_slug = slug)

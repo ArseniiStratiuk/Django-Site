@@ -6,15 +6,16 @@
 </script>
 
 
-<div class="col s12 l2 m2">
+<div class="col s2 l2 m2 ">
     <ul class="collapsible">
         {% for cat in sidebar %}
             <li>
-                <div class="collapsible-header">{{ cat.name }}</div>
+                <div class="collapsible-header">{{cat.name}}</div>
                 <div class="collapsible-body">
-                    <a href="/{{ cat.category_slug }}">{{ cat.info }}</a>
+                    <a href="/{{cat.category_slug}}">{{cat.info}}</a>
                 </div>
             </li>
         {% endfor %}
     </ul>
+
 </div>
