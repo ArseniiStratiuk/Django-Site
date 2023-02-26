@@ -1,3 +1,4 @@
 from django.shortcuts import render
 
-# Create your views here.
+def load_messages_home(request):
+    pass
