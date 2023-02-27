@@ -20,7 +20,7 @@
                             <div class="col s6 l6">
                                 <h6><strong>Переглянуто: {{ views_num }}</strong></h6>
                             </div>
-                            <div class="col s6 l6">
+                            <div class="col s3 l3">
                                 {% if user.is_authenticated %}
                                     <form id="like" action="{% url 'like_post' post.id %}" method="GET">
                                     </form>
@@ -33,6 +33,20 @@
                                     {% endif %}
                                 </button>
                                 <h6><strong>{{ likes_num }} Like{{ likes_num|pluralize }}</strong></h6>
+                            </div>
+                            <div class="col s3 l3">
+                                {% if user.is_authenticated %}
+                                    <form id="save" action="{% url 'save_post' post.id %}" method="GET">
+                                    </form>
+                                {% endif %}
+                                <button form="save" type="submit" class="btn-floating waves-effect waves-light yellow darken-3">
+                                    {% if is_saved %}
+                                        <i class="medium material-icons">bookmark</i>
+                                    {% else %}
+                                        <i class="medium material-icons">bookmark_border</i>
+                                    {% endif %}
+                                </button>
+                                <h6><strong>Зберегти</strong></h6>
                             </div>
                         </div>                            
                         <h6>{{ post.created_at }}</h6>

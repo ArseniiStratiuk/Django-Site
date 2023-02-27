@@ -65,6 +65,17 @@ def like_post(request, post_id):
         post.likes.add(request.user)
     return redirect(f'/{post.post_slug}') 
 
+def save_post(request, post_id):
+    """
+    Add one save for one post per user.
+    """
+    post = Post.objects.get(id=post_id)
+    if post.saves.filter(id=request.user.id).exists():
+        post.saves.remove(request.user)
+    else:
+        post.saves.add(request.user)
+    return redirect(f'/{post.post_slug}') 
+
 def search_post(request):
     """
     Functionality for navbar to process search form.
@@ -128,6 +139,7 @@ def slug_process(request, slug):
         views = post.get_views_number()
         likes = post.get_likes_number()
         is_liked = post.likes.filter(id=request.user.id).exists()
+        is_saved = post.saves.filter(id=request.user.id).exists()
         comments = Comment.objects.filter(post=post)
         form = get_comment_form(request, post)
         data_dict = { 'post': post, 
@@ -136,6 +148,7 @@ def slug_process(request, slug):
                       'comment_form': form, 
                       'comments': comments, 
                       'is_liked': is_liked, 
+                      'is_saved': is_saved, 
                       'sidebar': sidebar }
         return render(request, 'post_view.html', data_dict)
 

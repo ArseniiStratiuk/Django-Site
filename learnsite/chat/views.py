@@ -21,8 +21,13 @@ def load_messages(request, pk, users=None):
     messages = Message.objects.filter(Q(sender=request.user), 
                                       Q(receiver=another_user))
     messages.update(seen=True)
+    
+    if not users:
+        users = User.objects.all()
+    
     context = {
         'another_user': another_user, 
         'messages': messages, 
+        'users': users
     }
     return render(request, 'privatechat.html', context)
