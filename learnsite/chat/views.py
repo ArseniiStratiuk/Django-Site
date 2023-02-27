@@ -31,3 +31,6 @@ def load_messages(request, pk, users=None):
         'users': users
     }
     return render(request, 'privatechat.html', context)
+
+def search_user(request):
+    return load_messages_home(request)
