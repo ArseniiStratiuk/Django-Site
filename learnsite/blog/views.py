@@ -76,6 +76,24 @@ def save_post(request, post_id):
         post.saves.add(request.user)
     return redirect(f'/{post.post_slug}') 
 
+def show_saved_post(request):
+    """
+    Show user's saved posts.
+    """
+    page = request.GET.get('page')
+    saved_posts = request.user.post_save.all()
+    paginator = Paginator(saved_posts, 4)
+    try:
+        data_page = paginator.page(page)
+    except PageNotAnInteger:
+        data_page = paginator.page(1)
+    except EmptyPage:
+        data_page = paginator.page(paginator.num_pages)
+    data_dict  ={
+        "posts": data_page
+    }
+    return render(request, 'blog_main.html', data_dict)
+
 def search_post(request):
     """
     Functionality for navbar to process search form.
@@ -86,16 +104,15 @@ def search_post(request):
         text = request.POST.get("searchpost")
         posts = Post.objects.filter(title__icontains=text)
         
-    paginator = Paginator(posts, 4)
-    try:
-        data_page = paginator.page(page)
-    except PageNotAnInteger:
-        data_page = paginator.page(1)
-    except EmptyPage:
-        data_page = paginator.page(paginator.num_pages)
-    
-    data_dict = {
-        "posts": data_page
+    # paginator = Paginator(posts, 4)
+    # try:
+    #     data_page = paginator.page(page)
+    # except PageNotAnInteger:
+    #     data_page = paginator.page(1)
+    # except EmptyPage:
+    #     data_page = paginator.page(paginator.num_pages)
+    data_dict  ={
+        "posts": posts
     }
     return render(request, 'blog_main.html', data_dict)
 
