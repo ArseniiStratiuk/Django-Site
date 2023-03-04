@@ -3,5 +3,6 @@ from . import views
 
 urlpatterns = [
     path(r'', views.load_messages_home),
-    path('search_user/', views.search_user, name="search_user"),    
+    path('search_user/', views.search_user, name="search_user"),
+    path('send_message/', views.send_message, name='send_message'),
 ]

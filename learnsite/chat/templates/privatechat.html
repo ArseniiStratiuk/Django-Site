@@ -36,20 +36,19 @@
                     <div class="col s4 m4 l4">
                         <h5>Ви в чаті з користувачем</h5>
                     </div>
+                    {% if another_user %}
                     <div class="col s2 m2 l2">
-                        <a href="{% url 'look_profile' another_user.username%}">
+                        <a href="{% url 'look_profile' another_user.username %}">
                             <img src="/{{another_user.profile.avatar}}" class="circle responsive-img">
                         </a>
                     </div>
                     <div class="col s6 m6 l6">
                         <span class="black-text">
-                            <a href="{% url 'look_profile' another_user.username%}"> {{another_user.username}}</a>
+                            <a href="{% url 'look_profile' another_user.username %}">{{another_user.username}}</a>
                         </span>
                     </div>
+                    {% endif %}
                 </div>
-
-
-
 
                 Повідомлення
                 {% for msg in messages %}
@@ -57,16 +56,26 @@
                     <div  class="col s12 m12 l12">
                         <div class="card-panel grey lighten-2" >
                             <div class="card-content">
-                                <p class="left">{{message.sender.username}}</p>
-                                <p class="left">{{message.text}}</p>
+                                <p class="left">{{msg.sender.username}}</p>
+                                <p class="left">{{msg.text}}</p>
                             </div>
                         </div>
                     </div>
                 </div> 
                 {% endfor %} 
 
-            </div>
+                <div class="row valign-wrapper">
+                    <div class="col s12 m12 l12">
+                        <form id="send_message_form" method="POST" action="{% url 'send_message' %}">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <input type="hidden" name="recipient" value="{{ another_user }}">
+                            <button class="waves-effect waves-light teal lighten-2 btn" type="submit">Надіслати</button>
+                        </form>
+                    </div>
+                </div>                
 
+            </div>
 
     </div>
 
