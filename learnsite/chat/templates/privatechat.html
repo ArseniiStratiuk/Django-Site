@@ -51,20 +51,20 @@
                 </div>
 
                 Повідомлення
-                {% for msg in messages %}
+                {% for message in messages %}
                 <div class="row valign-wrapper">
                     <div  class="col s12 m12 l12">
                         <div class="card-panel grey lighten-2" >
                             <div class="card-content">
-                                <p class="left">{{msg.sender.username}}</p>
-                                <p class="left">{{msg.text}}</p>
+                                <p class="left">{{message.sender.username}}</p>
+                                <p class="left">{{message.text}}</p>
                             </div>
                         </div>
                     </div>
                 </div> 
                 {% endfor %} 
 
-                <div class="row valign-wrapper">
+                {% comment %} <div class="row valign-wrapper">
                     <div class="col s12 m12 l12">
                         <form id="send_message_form" method="POST" action="{% url 'send_message' %}">
                             {% csrf_token %}
@@ -73,10 +73,54 @@
                             <button class="waves-effect waves-light teal lighten-2 btn" type="submit">Надіслати</button>
                         </form>
                     </div>
-                </div>                
+                </div>            {% endcomment %}
+
+                <div class="row">
+                    <div class="input-field col s10">
+                        <input id="message-input" type="text">
+                    </div>
+                    <div class="col s2">
+                        <button id="send-btn" 
+                        class="waves-effect waves-light teal lighten-2 btn" 
+                        type="submit" name="action">Надіслати</button>
+                    </div>
+                </div>
 
             </div>
 
     </div>
+
+<script>
+    let messageSendBtn = document.getElementById("send-btn");
+    let messageInput = document.getElementById("message-input");
+    messageInput.scrollIntoView()
+
+    function sendMessage() {
+        let message = messageInput.value;
+        if (message === "") {
+            return;
+        }
+        messageInput.value = "";
+        fetch("{ url 'chatroom-ajax' another_user.id }", {
+            method: "POST", 
+            credential: "same-origin", 
+            headers: {
+                "Content-Type": "application/json", 
+                "X-CSRFToken": "{{ csrf_token }}"
+            }, 
+            body: JSON.stringify({"message": message})
+        }).then(resp => resp.json()).then(messages => {
+            for (message of messages) {
+                show_message(message);
+            }
+        });
+    }
+
+    function show_message(message) {
+        console.log(message);
+    }
+
+    messageSendBtn.addEventListener("click", sendMessage)
+</script>
 
 {% endblock %}
