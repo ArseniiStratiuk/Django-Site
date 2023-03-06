@@ -21,7 +21,7 @@
                     </div>
                     <div class="col s8 m8 l8">
                         <span class="black-text">
-                            <a href="/chat/"> {{user_.username}}</a>
+                            <a href="/chat/{{}}"> {{user_.username}}</a>
                         </span>
                     </div>
                 </div>
@@ -50,30 +50,25 @@
                     {% endif %}
                 </div>
 
+                <div id="messages" class=>
                 Повідомлення
-                {% for message in messages %}
-                <div class="row valign-wrapper">
-                    <div  class="col s12 m12 l12">
-                        <div class="card-panel grey lighten-2" >
-                            <div class="card-content">
-                                <p class="left">{{message.sender.username}}</p>
-                                <p class="left">{{message.text}}</p>
+
+                    {% for message in messages %}
+                    <div class="row valign-wrapper">
+                        <div  class="col s12 m12 l12">
+                            <div class="card-panel grey lighten-2" >
+                                <div class="card-content">
+                                    <p class="left">{{ message.sender.username }}</p>
+                                    <br>
+                                    <p class="left">{{ message.text }}</p>
+                                    <br>
+                                    <span>{{ message.date_created }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div> 
-                {% endfor %} 
-
-                {% comment %} <div class="row valign-wrapper">
-                    <div class="col s12 m12 l12">
-                        <form id="send_message_form" method="POST" action="{% url 'send_message' %}">
-                            {% csrf_token %}
-                            {{ form.as_p }}
-                            <input type="hidden" name="recipient" value="{{ another_user }}">
-                            <button class="waves-effect waves-light teal lighten-2 btn" type="submit">Надіслати</button>
-                        </form>
-                    </div>
-                </div>            {% endcomment %}
+                    </div> 
+                    {% endfor %} 
+                </div>
 
                 <div class="row">
                     <div class="input-field col s10">
@@ -101,7 +96,7 @@
             return;
         }
         messageInput.value = "";
-        fetch("{ url 'chatroom-ajax' another_user.id }", {
+        fetch("{% url 'chatroom-ajax' another_user.id %}", {
             method: "POST", 
             credential: "same-origin", 
             headers: {
@@ -111,13 +106,29 @@
             body: JSON.stringify({"message": message})
         }).then(resp => resp.json()).then(messages => {
             for (message of messages) {
-                show_message(message);
+                showMessage(message);
             }
-        });
+        }).catch(e => "Error in fetch: " + e);
     }
 
-    function show_message(message) {
+    function showMessage(message) {
         console.log(message);
+        let msgContainer = document.getElementById("messages");
+        let msgRow = document.createElement("div");
+        msgRow.className = "row valign-wrapper"
+        msgRow.innerHTML = `<div class="col s12 m12 l12">
+                            <div class="card-panel grey lighten-2" >
+                                <div class="card-content">
+                                    <p class="left">${message.sender}</p>
+                                    <br>
+                                    <p class="left">${message.message}</p>
+                                    <br>
+                                    <span>${message.date_created}</span>
+                                </div>
+                            </div>
+                        </div>`;
+        msgContainer.append(msgRow);
+        msgRow.scrollIntoView();
     }
 
     messageSendBtn.addEventListener("click", sendMessage)

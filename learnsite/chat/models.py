@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 
 class Message(models.Model):
-    sender = models.OneToOneField(User, on_delete=models.CASCADE, 
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, 
                                   related_name='sent_messages')
     receiver = models.ForeignKey(User, on_delete=models.CASCADE, 
                                  related_name='received_messages')
