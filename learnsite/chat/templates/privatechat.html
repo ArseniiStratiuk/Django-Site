@@ -47,19 +47,17 @@
                     {% endif %}
                 </div>
 
-                <div id="messages" class=>
+                <div id="messages">
                 Повідомлення
 
                     {% for message in messages %}
                     <div class="row valign-wrapper">
-                        <div  class="col s12 m12 l12">
-                            <div class="card-panel grey lighten-2" >
+                        <div class="col s12 m12 l12">
+                            <div class="card-panel teal lighten-4">
                                 <div class="card-content">
-                                    <p class="left">{{ message.sender.username }}</p>
-                                    <br>
-                                    <p class="left">{{ message.text }}</p>
-                                    <br>
-                                    <span>{{ message.date_created }}</span>
+                                    <h6><strong>{{ message.sender.username }}</strong></h6>
+                                    <p>{{ message.text }}</p>
+                                    <span><i>{{ message.date_created }}</i></span>
                                 </div>
                             </div>
                         </div>
@@ -114,13 +112,11 @@
         let msgRow = document.createElement("div");
         msgRow.className = "row valign-wrapper"
         msgRow.innerHTML = `<div class="col s12 m12 l12">
-                            <div class="card-panel grey lighten-2" >
+                            <div class="card-panel teal lighten-4" >
                                 <div class="card-content">
-                                    <p class="left">${message.sender}</p>
-                                    <br>
-                                    <p class="left">${message.message}</p>
-                                    <br>
-                                    <span>${message.date_created}</span>
+                                    <h6><strong>${message.sender}</strong></h6>
+                                    <p>${message.message}</p>
+                                    <span><i>${message.date_created}</i></span>
                                 </div>
                             </div>
                         </div>`;
