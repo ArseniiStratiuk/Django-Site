@@ -15,21 +15,18 @@
             {% for user_ in users %}
                 <div class="row valign-wrapper">
                     <div class="col s4 m4 l4">
-                        <a href="/chat/">
+                        <a href="/chat/{{ user_.id }}">
                             <img src="/{{user_.profile.avatar}}" class="circle responsive-img">
                         </a>
                     </div>
                     <div class="col s8 m8 l8">
                         <span class="black-text">
-                            <a href="/chat/{{}}"> {{user_.username}}</a>
+                            <a href="/chat/{{ user_.id }}">{{ user_.username }}</a>
                         </span>
                     </div>
                 </div>
             {% endfor %}
         </div>
-
-
-
 
             <div class="col s8 m9 l9">
                 <div class="row valign-wrapper">
