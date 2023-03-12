@@ -129,7 +129,26 @@
         if (event.key === "Enter") {
             sendMessage();
         }
-    })
+    });
+
+    // Automatic load messages on timer
+    function load_messages() {
+        fetch("{% url 'chatroom-ajax' another_user.id %}", {
+            method: "GET", 
+            credential: "same-origin", 
+            headers: {
+                "Content-Type": "application/json", 
+                "X-CSRFToken": "{{ csrf_token }}"
+            }, 
+        }).then(resp => resp.json()).then(messages => {
+            for (message of messages) {
+                showMessage(message);
+            }
+        });
+    }
+
+    setInterval(load_messages, 5000);
+
 </script>
 
 {% endblock %}
