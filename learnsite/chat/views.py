@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.http.response import JsonResponse
+from django.contrib.humanize.templatetags.humanize import naturaltime
 from .models import Message
 from .forms import MessageForm
 
@@ -21,9 +22,12 @@ def load_messages_home(request):
 @login_required
 def load_messages(request, pk, users=None):
     another_user = get_object_or_404(User, pk=pk)
-    messages = Message.objects.filter( Q(sender=request.user), 
-                                       Q(receiver=another_user))
+    messages = Message.objects.filter(Q(sender=request.user), 
+                                      Q(receiver=another_user))
     messages.update(seen=True)
+
+    messages = messages | Message.objects.filter(Q(sender=another_user), 
+                                                 Q(receiver=request.user))
 
     if not users:
         users = User.objects.all()
@@ -34,7 +38,6 @@ def load_messages(request, pk, users=None):
         "another_user": another_user,
         "messages": messages,
         "users": users,
-        "form": form
     }
 
     return render(request, "privatechat.html", context)
@@ -49,7 +52,7 @@ def load_msgAJAX(request, pk):
         message_list.append({
             "sender": msg.sender.username, 
             "message": msg.text,
-            "date_created": msg.date_created
+            "date_created": naturaltime(msg.date_created)
         })
         msg.seen = True
     messages.update(seen=True)
@@ -62,7 +65,7 @@ def load_msgAJAX(request, pk):
             message_list.append({
                 "sender": m.sender.username, 
                 "message": m.text,
-                "date_created": m.date_created
+                "date_created": naturaltime(m.date_created)
             })
     return JsonResponse(message_list, safe=False)
 

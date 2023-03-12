@@ -21,7 +21,7 @@
                     </div>
                     <div class="col s8 m8 l8">
                         <span class="black-text">
-                            <a href="/chat/{{ user_.id }}">{{ user_.username }}</a>
+                            <a class="teal-text text-lighten-2" href="/chat/{{ user_.id }}"><h6><strong>{{ user_.username }}</strong></h6></a>
                         </span>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                     </div>
                     <div class="col s6 m6 l6">
                         <span class="black-text">
-                            <a href="{% url 'look_profile' another_user.username %}">{{another_user.username}}</a>
+                            <a class="teal-text text-lighten-2" href="{% url 'look_profile' another_user.username %}"><h5><strong>{{another_user.username}}</strong></h5></a>
                         </span>
                     </div>
                     {% endif %}
@@ -125,6 +125,11 @@
     }
 
     messageSendBtn.addEventListener("click", sendMessage)
+    messageInput.addEventListener("keypress", (event) => {
+        if (event.key === "Enter") {
+            sendMessage();
+        }
+    })
 </script>
 
 {% endblock %}
