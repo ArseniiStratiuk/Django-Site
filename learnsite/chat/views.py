@@ -9,6 +9,11 @@ from django.contrib.humanize.templatetags.humanize import naturaltime
 from .models import Message
 from .forms import MessageForm
 
+
+def unread_msgs(request, sender):
+    msgs = Message.objects.filter(Q(seen=False) & Q(receiver=request.user, sender=sender))
+    return msgs.count()
+
 @login_required
 def load_messages_home(request):
     users = None
@@ -31,13 +36,16 @@ def load_messages(request, pk, users=None):
 
     if not users:
         users = User.objects.all()
-    
-    form = MessageForm()
+
+    unread_num_dict = {}  # {"other_user": 19, ...}
+    for user in users:
+        unread_num_dict[user.username] = unread_msgs(request, user)
     
     context = {
         "another_user": another_user,
         "messages": messages,
         "users": users,
+        "unread_msg": unread_num_dict
     }
 
     return render(request, "privatechat.html", context)
