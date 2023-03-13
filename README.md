@@ -9,3 +9,4 @@ There is also a system of profiles, comments and other frequently used features 
 This website is built with the Django web framework. Apart from HTML, Materialize CSS was used to create a nice and modern look, design without a lot of code.
 
 **The project is under active development.**
+
