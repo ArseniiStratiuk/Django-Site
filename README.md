@@ -1,6 +1,6 @@
 # Django Website Blog
 
-<br> 
+<br>
 
 Educational complex Django project. Implementation of a blog, a site with the possibility of viewing, searching and liking various articles. 
 
