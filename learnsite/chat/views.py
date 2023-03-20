@@ -37,7 +37,7 @@ def load_messages(request, pk, users=None):
     if not users:
         users = User.objects.all()
 
-    unread_num_dict = {}  # {"other_user": 19, ...}
+    unread_num_dict = {}  # {"another_user": 19, ...}
     for user in users:
         unread_num_dict[user.username] = unread_msgs(request, user)
     
