@@ -4,7 +4,15 @@
     <div class="container">
         <form method="POST">
             {% csrf_token %}
-            {{ form }}
+            {% for field in form %}
+                <p class="red-text">{{ field.errors }}</p>
+                <p class="black-text">{{ field.label_tag }}</p>
+                <div class="input-field col s10">
+                    {{ field }}
+                    <span>{{ field.help_text }}</span>
+                </div>
+            {% endfor %}
+            <span class="red-text">{{ form.non_field_errors }}</span>
             <br><br><br>
             <button class="waves-effect waves-light teal lighten-2 btn" type="submit">Зареєструватися</button>
         </form>
