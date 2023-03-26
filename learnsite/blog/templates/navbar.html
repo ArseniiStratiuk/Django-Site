@@ -10,9 +10,9 @@
 
       <script>
         document.addEventListener('DOMContentLoaded', function() {
-        var elems = document.querySelectorAll('.dropdown-trigger');
-        var instances = M.Dropdown.init(elems);
-      });
+          var elems = document.querySelectorAll('.dropdown-trigger');
+          var instances = M.Dropdown.init(elems);
+        });
       </script>
       
       <div class="navbar-fixed">
@@ -41,21 +41,21 @@
                   <li><a href="/logout">Вийти</a></li>
                 {% endif %}
               </ul>
-
-              <a href="#" class="dropdown-trigger btn show-on-med-and-down hide-on-med-and-up left" 
-                data-target="dropMenu">Menu</a>
-              <ul id="dropMenu" class="dropdown-content">
-                {% if not user.is_authenticated %}
-                  <li><a href="/login">Увійти</a></li>
-                  <li><a href="/register">Зареєструватися</a></li>
-                {% else %}
-                  <li><a href="{% url 'saved_posts' %}">Збережене</a></li>
-                  <li><a href="/profile">Мій Профіль</a></li>
-                  <li><a href="/chat">Чат</a></li>
-                  <li><a href="/logout">Вийти</a></li>
-                {% endif %}
-              </ul>
-
+              <div class="valign-wrapper left hide-on-large-only">
+                <a href="#" class="dropdown-trigger btn-large waves-effect waves-light" 
+                  data-target="dropMenu">Menu</a>
+                <ul id="dropMenu" class="dropdown-content">
+                  {% if not user.is_authenticated %}
+                    <li><a href="/login">Увійти</a></li>
+                    <li><a href="/register">Зареєструватися</a></li>
+                  {% else %}
+                    <li><a href="{% url 'saved_posts' %}">Збережене</a></li>
+                    <li><a href="/profile">Мій Профіль</a></li>
+                    <li><a href="/chat">Чат</a></li>
+                    <li><a href="/logout">Вийти</a></li>
+                  {% endif %}
+                </ul>
+              </div>
             </div>
           </div>
         </nav>

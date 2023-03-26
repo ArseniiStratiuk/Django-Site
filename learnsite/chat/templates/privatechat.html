@@ -25,9 +25,9 @@
                                 {% for key, value in unread_msg.items %}
                                     {% if key == user_.username %}
                                         {% if value %}
-                                        <span class="new badge">
-                                            {{ value }}
-                                        </span>
+                                            <span class="new badge">
+                                                {{ value }}
+                                            </span>
                                         {% endif %}
                                     {% endif %}
                                 {% endfor %}
