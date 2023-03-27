@@ -20,6 +20,7 @@ def blog_main(request, *args):
     except EmptyPage:
         data_page = paginator.page(paginator.num_pages)
     data_dict  ={
+        "slide_posts": posts,
         "posts": data_page,
         "sidebar": sidebar
     }
@@ -80,6 +81,8 @@ def show_saved_post(request):
     """
     Show user's saved posts.
     """
+    posts = Post.objects.all()
+    sidebar = Category.objects.all()
     page = request.GET.get('page')
     saved_posts = request.user.post_save.all()
     paginator = Paginator(saved_posts, 4)
@@ -90,7 +93,9 @@ def show_saved_post(request):
     except EmptyPage:
         data_page = paginator.page(paginator.num_pages)
     data_dict  ={
-        "posts": data_page
+        "slide_posts": posts,
+        "posts": data_page,
+        "sidebar": sidebar
     }
     return render(request, 'blog_main.html', data_dict)
 
