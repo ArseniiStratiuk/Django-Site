@@ -3,7 +3,7 @@
 <br>
 
 You can view the appearance and functionality of the site hosted by Pythonanywhere using this link:
-https://djangoblogchat.pythonanywhere.com/
+https://djangoblogchat.pythonanywhere.com/ 
 
 Educational complex Django project. Implementation of a blog, a site with the possibility of viewing, searching and liking various articles. 
 
