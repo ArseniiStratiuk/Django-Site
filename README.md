@@ -1,6 +1,6 @@
 # Django Website Blog
 
-<br>
+<br> 
 
 You can view the appearance and functionality of the site hosted by Pythonanywhere using this link:
 https://djangoblogchat.pythonanywhere.com/
