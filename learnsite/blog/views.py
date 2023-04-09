@@ -108,7 +108,11 @@ def search_post(request):
     posts = None
     if request.method == "POST":
         text = request.POST.get("searchpost")
-        posts = Post.objects.filter(title__icontains=text)
+        posts = Post.objects.filter(
+            Q(title__icontains=text.lower()) | 
+            Q(title__icontains=text.capitalize()) | 
+            Q(title__icontains=text.upper())
+        )
         
     # paginator = Paginator(posts, 4)
     # try:
