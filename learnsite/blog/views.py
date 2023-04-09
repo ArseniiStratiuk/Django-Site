@@ -104,6 +104,8 @@ def search_post(request):
     """
     Functionality for navbar to process search form.
     """
+    sidebar = Category.objects.all()
+    all_posts = Post.objects.all()
     page = request.GET.get('page')
     posts = None
     if request.method == "POST":
@@ -122,7 +124,9 @@ def search_post(request):
     # except EmptyPage:
     #     data_page = paginator.page(paginator.num_pages)
     data_dict  ={
-        "posts": posts
+        "slide_posts": all_posts,
+        "posts": posts,
+        "sidebar": sidebar
     }
     return render(request, 'blog_main.html', data_dict)
 
