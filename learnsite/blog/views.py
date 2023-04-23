@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic.list import ListView
+from django.views.generic import DetailView, CreateView
 
 '''
 def blog_main(request, *args):
@@ -45,6 +46,45 @@ class PostListMain(ListView):
     # def get_queryset(self):  # Adjusting standard Post list.
     #     return Post.objects.filter(pk__lte=4)
     
+
+class ShowPost(DetailView):
+    model = Post
+    template_name = 'post_view.html'
+    slug_url_kwargs = 'slug'
+    context_object_name = 'post'
+
+    def get_object(self):
+        slug = self.kwargs['slug']
+        obj_post = Post.objects.get(post_slug=slug)
+        return obj_post
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if self.request.user.is_authenticated:
+            if not context['post'].views_number.filter(id=self.request.user.id).exists():
+                context['post'].views_number.add(self.request.user)
+                
+        context['views_num'] = context['post'].get_views_number()
+        context['likes_num'] = context['post'].get_likes_number()
+        context['is_liked'] = context['post'].likes.filter(id=self.request.user.id).exists()
+        context['is_saved'] = context['post'].saves.filter(id=self.request.user.id).exists()
+        context['comments'] = Comment.objects.filter(post=context['post'])
+        context['sidebar'] = Category.objects.all()
+
+        return context
+
+
+class UserRegistration(CreateView):
+    form_class = RegisterForm
+    template_name = 'register.html'
+    success_url = '/'
+
+    def form_valid(self, form):
+        username = "New User"
+        messages.success(self.request, f"Створено новий акаунт: {username}")
+        return super().form_valid(form)
+
 
 @login_required
 def profile(request):
