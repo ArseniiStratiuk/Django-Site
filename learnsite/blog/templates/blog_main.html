@@ -1,5 +1,5 @@
 {% extends 'navbar.html' %}
-
+{% load cache %}
   {% block carousel %}
     <h1 class="center-align">Запрацював блог</h1>
     <br><br>
@@ -103,4 +103,5 @@
 
       {% endif %}
   </div>
+  {% include 'footer.html' %}
   {% endblock %}

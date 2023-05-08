@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path, include
+from .settings import DEBUG
 
 urlpatterns = [
     path('chat/', include('chat.urls')),
@@ -23,3 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blog.urls'))
 ]
+
+if DEBUG:
+    urlpatterns=[ path('__debug__/', include('debug_toolbar.urls')),] \
+    + urlpatterns

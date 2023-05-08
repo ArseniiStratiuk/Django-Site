@@ -46,8 +46,14 @@ class PostListMain(DataMixin, ListView):
         context.update(mix_context)
         return context
     
-    # def get_queryset(self):  # Adjusting standard Post list.
-    #     return Post.objects.filter(pk__lte=4)
+    def get_queryset(self):
+        search_query = self.request.GET.get("searchpost")
+        if search_query:
+            return Post.objects.filter(Q(title__icontains=search_query.lower()) |
+                                Q(title__icontains=search_query.capitalize()) | 
+                                Q(title__icontains=search_query.upper())
+            )
+        return Post.objects.all()
     
 
 class ShowPost(DataMixin, LoginRequiredMixin, DetailView):
