@@ -1,7 +1,6 @@
 {% extends 'navbar.html' %}
 {% load cache %}
   {% block carousel %}
-    <h1 class="center-align">Запрацював блог</h1>
     <br><br>
     <div class="carousel carousel-slider center">
       {% for post in slide_posts %}
@@ -18,14 +17,27 @@
       document.addEventListener('DOMContentLoaded', function() {
         var elems = document.querySelectorAll('.carousel');
         var instances = M.Carousel.init(elems, {
-            fullWidth: true,
-            indicators: false,
-          });
-          setInterval(function() {
+          fullWidth: true,
+          indicators: false,
+        });
+    
+        var carouselIntervalId = setInterval(function() {
+          M.Carousel.getInstance(elems[0]).next();
+        }, 5000);
+    
+        var carouselElement = document.querySelector('.carousel');
+        carouselElement.addEventListener('mouseover', function() {
+          clearInterval(carouselIntervalId);
+        });
+    
+        carouselElement.addEventListener('mouseout', function() {
+          carouselIntervalId = setInterval(function() {
             M.Carousel.getInstance(elems[0]).next();
           }, 5000);
         });
+      });
     </script>
+    
   {% endblock %}
 
   {% block content %}
