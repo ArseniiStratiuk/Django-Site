@@ -1,164 +1,161 @@
 {% extends 'navbar.html' %}
 
 {% block content %}
-    <div class="row">
-        <div class="col s4 m3 l3 sidenav-fixed">
-            <div class="row valign-wrapper">
-                <form id="search_user" method="POST" action="{% url 'search_user'%}">
-                    {% csrf_token %}
-                    <input type="search" name="searchuser" placeholder="Шукати користувача">
-                </form>
-                <button class="waves-effect waves-light teal lighten-2 btn"
-                        form = "search_user" 
-                        type = "submit"> Пошук</button>
+<div class="row">
+    <!-- Sidebar with Users -->
+    <div class="col s4 m3 l3 sidenav-fixed">
+        <div class="row valign-wrapper">
+            <form id="search_user" method="POST" action="{% url 'search_user' %}">
+                {% csrf_token %}
+                <input type="search" name="searchuser" placeholder="Шукати користувача">
+            </form>
+            <button class="waves-effect waves-light teal lighten-2 btn" 
+                    form="search_user" 
+                    type="submit">Пошук</button>
+        </div>
+
+        {% for user_ in users %}
+        <div class="row valign-wrapper">
+            <div class="col s4 m4 l4">
+                <a href="/chat/{{ user_.id }}">
+                    <img src="/{{ user_.profile.avatar }}" class="circle responsive-img">
+                </a>
             </div>
-            {% for user_ in users %}
-                <div class="row valign-wrapper">
-                    <div class="col s4 m4 l4">
-                        <a href="/chat/{{ user_.id }}">
-                            <img src="/{{user_.profile.avatar}}" class="circle responsive-img">
-                        </a>
-                    </div>
-                    <div class="col s8 m8 l8">
-                        <span class="black-text">
-                            <a class="teal-text text-lighten-2" href="/chat/{{ user_.id }}"><h6><strong>{{ user_.username }}</strong></h6>
-                                {% for key, value in unread_msg.items %}
-                                    {% if key == user_.username %}
-                                        {% if value %}
-                                            <span class="new badge">
-                                                {{ value }}
-                                            </span>
-                                        {% endif %}
-                                    {% endif %}
-                                {% endfor %}
-                            </a>
-                        </span>
+            <div class="col s8 m8 l8">
+                <span class="black-text">
+                    <a class="teal-text text-lighten-2" href="/chat/{{ user_.id }}">
+                        <h6><strong>{{ user_.username }}</strong></h6>
+                        {% for key, value in unread_msg.items %}
+                            {% if key == user_.username and value %}
+                            <span class="new badge">{{ value }}</span>
+                            {% endif %}
+                        {% endfor %}
+                    </a>
+                </span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Main Chat Section -->
+    <div class="col s8 m9 l9">
+        <div class="row valign-wrapper">
+            <div class="col s4 m4 l4">
+                <h5>Ви в чаті з користувачем</h5>
+            </div>
+            {% if another_user %}
+            <div class="col s2 m2 l2">
+                <a href="{% url 'look_profile' another_user.username %}">
+                    <img src="/{{ another_user.profile.avatar }}" class="circle responsive-img">
+                </a>
+            </div>
+            <div class="col s6 m6 l6">
+                <span class="black-text">
+                    <a class="teal-text text-lighten-2" href="{% url 'look_profile' another_user.username %}">
+                        <h5><strong>{{ another_user.username }}</strong></h5>
+                    </a>
+                </span>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Messages Display -->
+        <div id="messages">
+            {% for message in messages %}
+            <div class="row valign-wrapper" id="msg-{{ message.id }}">
+                <div class="col s12 m12 l12">
+                    <div class="card-panel teal lighten-4">
+                        <div class="card-content">
+                            <h6><strong>{{ message.sender.username }}</strong></h6>
+                            <p>{{ message.text }}</p>
+                            <span><i>{{ message.date_created }}</i></span>
+                        </div>
                     </div>
                 </div>
+            </div>
             {% endfor %}
         </div>
 
-            <div class="col s8 m9 l9">
-                <div class="row valign-wrapper">
-                    <div class="col s4 m4 l4">
-                        <h5>Ви в чаті з користувачем</h5>
-                    </div>
-                    {% if another_user %}
-                    <div class="col s2 m2 l2">
-                        <a href="{% url 'look_profile' another_user.username %}">
-                            <img src="/{{another_user.profile.avatar}}" class="circle responsive-img">
-                        </a>
-                    </div>
-                    <div class="col s6 m6 l6">
-                        <span class="black-text">
-                            <a class="teal-text text-lighten-2" href="{% url 'look_profile' another_user.username %}"><h5><strong>{{another_user.username}}</strong></h5></a>
-                        </span>
-                    </div>
-                    {% endif %}
-                </div>
-
-                <div id="messages">
-                Повідомлення
-
-                    {% for message in messages %}
-                    <div class="row valign-wrapper">
-                        <div class="col s12 m12 l12">
-                            <div class="card-panel teal lighten-4">
-                                <div class="card-content">
-                                    <h6><strong>{{ message.sender.username }}</strong></h6>
-                                    <p>{{ message.text }}</p>
-                                    <span><i>{{ message.date_created }}</i></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div> 
-                    {% endfor %} 
-                </div>
-
-                <div class="row">
-                    <div class="input-field col s10">
-                        <input id="message-input" type="text">
-                    </div>
-                    <div class="col s2">
-                        <button id="send-btn" 
-                        class="waves-effect waves-light teal lighten-2 btn" 
-                        type="submit" name="action">Надіслати</button>
-                    </div>
-                </div>
-
+        <!-- Message Input -->
+        <div class="row">
+            <div class="input-field col s10">
+                <input id="message-input" type="text">
             </div>
-
+            <div class="col s2">
+                <button id="send-btn" 
+                        class="waves-effect waves-light teal lighten-2 btn" 
+                        type="button">Надіслати</button>
+            </div>
+        </div>
     </div>
+</div>
 
 <script>
-    let messageSendBtn = document.getElementById("send-btn");
-    let messageInput = document.getElementById("message-input");
-    messageInput.scrollIntoView()
+    const messageSendBtn = document.getElementById("send-btn");
+    const messageInput = document.getElementById("message-input");
+    const messagesContainer = document.getElementById("messages");
+    const displayedMessages = new Set(); // To avoid duplicate messages
 
-    function sendMessage() {
-        let message = messageInput.value;
-        if (message === "") {
-            return;
-        }
-        messageInput.value = "";
-        fetch("{% url 'chatroom-ajax' another_user.id %}", {
-            method: "POST", 
-            credential: "same-origin", 
-            headers: {
-                "Content-Type": "application/json", 
-                "X-CSRFToken": "{{ csrf_token }}"
-            }, 
-            body: JSON.stringify({"message": message})
-        }).then(resp => resp.json()).then(messages => {
-            for (message of messages) {
-                showMessage(message);
-            }
-        }).catch(e => "Error in fetch: " + e);
-    }
+    function appendMessage(message) {
+        if (displayedMessages.has(message.id)) return; // Skip duplicates
+        displayedMessages.add(message.id);
 
-    function showMessage(message) {
-        console.log(message);
-        let msgContainer = document.getElementById("messages");
-        let msgRow = document.createElement("div");
-        msgRow.className = "row valign-wrapper"
-        msgRow.innerHTML = `<div class="col s12 m12 l12">
-                            <div class="card-panel teal lighten-4" >
-                                <div class="card-content">
-                                    <h6><strong>${message.sender}</strong></h6>
-                                    <p>${message.message}</p>
-                                    <span><i>${message.date_created}</i></span>
-                                </div>
-                            </div>
-                        </div>`;
-        msgContainer.append(msgRow);
+        const msgRow = document.createElement("div");
+        msgRow.className = "row valign-wrapper";
+        msgRow.id = `msg-${message.id}`;
+        msgRow.innerHTML = `
+            <div class="col s12 m12 l12">
+                <div class="card-panel teal lighten-4">
+                    <div class="card-content">
+                        <h6><strong>${message.sender}</strong></h6>
+                        <p>${message.message}</p>
+                        <span><i>${message.date_created}</i></span>
+                    </div>
+                </div>
+            </div>`;
+        messagesContainer.appendChild(msgRow);
         msgRow.scrollIntoView();
     }
 
-    messageSendBtn.addEventListener("click", sendMessage)
-    messageInput.addEventListener("keypress", (event) => {
-        if (event.key === "Enter") {
-            sendMessage();
-        }
-    });
+    function sendMessage() {
+        const messageText = messageInput.value.trim();
+        if (!messageText) return;
 
-    // Automatic load messages on timer
-    function load_messages() {
         fetch("{% url 'chatroom-ajax' another_user.id %}", {
-            method: "GET", 
-            credential: "same-origin", 
+            method: "POST",
+            credentials: "same-origin",
             headers: {
-                "Content-Type": "application/json", 
+                "Content-Type": "application/json",
                 "X-CSRFToken": "{{ csrf_token }}"
-            }, 
-        }).then(resp => resp.json()).then(messages => {
-            for (message of messages) {
-                showMessage(message);
-            }
-        });
+            },
+            body: JSON.stringify({ message: messageText })
+        })
+        .then(resp => resp.json())
+        .then(data => data.forEach(appendMessage))
+        .catch(console.error);
+
+        messageInput.value = "";
     }
 
-    setInterval(load_messages, 5000);
+    function fetchMessages() {
+        fetch("{% url 'chatroom-ajax' another_user.id %}", {
+            method: "GET",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(resp => resp.json())
+        .then(data => data.forEach(appendMessage))
+        .catch(console.error);
+    }
 
+    messageSendBtn.addEventListener("click", sendMessage);
+    messageInput.addEventListener("keypress", (event) => {
+        if (event.key === "Enter") sendMessage();
+    });
+
+    // Periodically fetch new messages
+    setInterval(fetchMessages, 5000);
 </script>
-
 {% endblock %}

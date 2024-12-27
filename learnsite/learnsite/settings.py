@@ -33,7 +33,7 @@ CACHES = {
 SECRET_KEY = 'django-insecure-fawl!uqqqfb-w*=6g80k@n_m1yc=gb*fp=p(2j6t-!b*v656w4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '0.0.0.0', '127.0.0.1']
 

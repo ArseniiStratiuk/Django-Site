@@ -211,7 +211,7 @@ def get_comment_form(request, post):
             content = request.POST.get('content')
             comment = Comment.objects.create(post=post, author=request.user, content=content)
             comment.save()
-        return redirect(f'/{post.post_slug}')            
+        return redirect(f'/{post.post_slug}')
     else:
         form = AddCommentForm()
     return form
