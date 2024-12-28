@@ -1,6 +1,6 @@
-# Django Website Blog
+# Django Website Blog using JavaScript, Python, and SQL
 
-#### Video Demo:  <URL HERE>
+#### Video Demo:  https://youtu.be/cuiRF7mrngw
 
 #### Description: The Django Website Blog is an educational project designed to demonstrate the capabilities of the Django web framework. This project implements a fully functional blog site with features such as viewing, searching, and liking various articles. Additionally, it includes a system for user profiles, comments, and other common website functionalities like chat
 
