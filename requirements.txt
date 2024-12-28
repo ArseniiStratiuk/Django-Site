@@ -1,0 +1,4 @@
+django
+django-tinymce
+django-debug-toolbar
+django-simple-captcha
