@@ -79,5 +79,6 @@ class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(default=timezone.now)
+    objects = models.Manager()
     def __str__(self):
         return self.content

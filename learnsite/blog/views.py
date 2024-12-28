@@ -11,26 +11,7 @@ from django.views.generic.list import ListView
 from django.views.generic import DetailView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .utils import *
-
-'''
-def blog_main(request, *args):
-    page = request.GET.get('page')
-    posts = Post.objects.all()
-    sidebar = Category.objects.all()
-    paginator = Paginator(posts, 4)
-    try:
-        data_page = paginator.page(page)
-    except PageNotAnInteger:
-        data_page = paginator.page(1)
-    except EmptyPage:
-        data_page = paginator.page(paginator.num_pages)
-    data_dict  ={
-        "slide_posts": posts,
-        "posts": data_page,
-        "sidebar": sidebar
-    }
-    return render(request, 'blog_main.html', data_dict)
-'''
+from django.urls import reverse
 
 
 class PostListMain(DataMixin, ListView):
@@ -81,10 +62,21 @@ class ShowPost(DataMixin, LoginRequiredMixin, DetailView):
         context['is_liked'] = context['post'].likes.filter(id=self.request.user.id).exists()
         context['is_saved'] = context['post'].saves.filter(id=self.request.user.id).exists()
         context['comments'] = Comment.objects.filter(post=context['post'])
+        context['comment_form'] = AddCommentForm()
 
         mix_context = self.get_user_context()
 
         return {**context, **mix_context}
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = AddCommentForm(request.POST)
+        if form.is_valid():
+            content = request.POST.get('content')
+            comment = Comment.objects.create(post=self.object, author=request.user, content=content)
+            comment.save()
+            return redirect(f'/{self.object.post_slug}')
+        return self.get(request, *args, **kwargs)
 
 
 class UserRegistration(CreateView):
@@ -186,14 +178,7 @@ def search_post(request):
             Q(title__icontains=text.capitalize()) | 
             Q(title__icontains=text.upper())
         )
-        
-    # paginator = Paginator(posts, 4)
-    # try:
-    #     data_page = paginator.page(page)
-    # except PageNotAnInteger:
-    #     data_page = paginator.page(1)
-    # except EmptyPage:
-    #     data_page = paginator.page(paginator.num_pages)
+
     data_dict  ={
         "slide_posts": all_posts,
         "posts": posts,
@@ -211,7 +196,7 @@ def get_comment_form(request, post):
             content = request.POST.get('content')
             comment = Comment.objects.create(post=post, author=request.user, content=content)
             comment.save()
-        return redirect(f'/{post.post_slug}')            
+        return redirect(f'/{post.post_slug}')
     else:
         form = AddCommentForm()
     return form
